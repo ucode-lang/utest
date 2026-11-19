@@ -281,6 +281,16 @@ assert_cli_error "bad-seed"     "expected an integer"         -s xyz \
     || failed_tests="$failed_tests cli_bad_seed"
 assert_cli_error "bad-reporter" "expected one of"             -r bogus \
     || failed_tests="$failed_tests cli_bad_reporter"
+# A value whose first line is valid must still be rejected: libucode 2026.07.09
+# made ^/$ per-line, so /^...$/ alone accepted "json\nx" and silently ran the
+# detailed reporter.
+nl_val() { printf '%s\n%s' "$1" "$2"; }
+assert_cli_error "nl-reporter"  "expected one of"             -r "$(nl_val json x)" \
+    || failed_tests="$failed_tests cli_nl_reporter"
+assert_cli_error "nl-jobs"      "expected a positive integer" -j "$(nl_val 2 x)" \
+    || failed_tests="$failed_tests cli_nl_jobs"
+assert_cli_error "nl-seed"      "expected an integer"         -s "$(nl_val x 7)" \
+    || failed_tests="$failed_tests cli_nl_seed"
 # An unknown flag and a nonexistent config must fail loudly, not be ignored.
 assert_cli_error "unknown-flag"  "Unknown option"             -Z \
     || failed_tests="$failed_tests cli_unknown_flag"

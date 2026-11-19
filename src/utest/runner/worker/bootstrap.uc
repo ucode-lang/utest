@@ -2,6 +2,7 @@ import * as worker_runner from 'utest.runner.worker.runner';
 import * as worker_reporter from 'utest.runner.worker.reporter';
 import * as property from 'utest.property';
 import * as fs from 'fs';
+import { dirname } from 'utest.util';
 
 const args = json(ARGV[0]);
 const test_file = args.file;
@@ -39,7 +40,7 @@ global.require = function(name) {
 };
 
 try {
-	let test_dir = replace(test_file, /\/[^\/]+$/, "");
+	let test_dir = dirname(test_file);
 	if (test_dir !== test_file) {
 		let real_dir = fs.realpath(test_dir) || test_dir;
 		// REQUIRE_SEARCH_PATH entries are glob templates (the '*' is replaced

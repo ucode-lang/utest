@@ -1,5 +1,5 @@
 import { run } from 'utest.runner';
-import { seed_from_clock } from 'utest.util';
+import { seed_from_clock, full_match, dirname } from 'utest.util';
 import * as fs from 'fs';
 
 const VALID_REPORTERS = /^(detailed|compact|json)$/;
@@ -10,7 +10,7 @@ const VALID_REPORTERS = /^(detailed|compact|json)$/;
 // Validate before coercing so the mistake is loud.
 function require_uint(v, label) {
 	let ok = (type(v) === 'int') ? (v >= 1)
-	       : (type(v) === 'string' && match(v, /^[0-9]+$/)) ? (int(v) >= 1)
+	       : (type(v) === 'string' && full_match(v, /^[0-9]+$/)) ? (int(v) >= 1)
 	       : false;
 	if (!ok) die(sprintf("Invalid %s '%s': expected a positive integer.\n", label, v));
 	return int(v);
@@ -18,7 +18,7 @@ function require_uint(v, label) {
 
 function require_int(v, label) {
 	let ok = (type(v) === 'int') ||
-	         (type(v) === 'string' && match(v, /^-?[0-9]+$/));
+	         (type(v) === 'string' && full_match(v, /^-?[0-9]+$/));
 	if (!ok) die(sprintf("Invalid %s '%s': expected an integer.\n", label, v));
 	return int(v);
 }
@@ -47,7 +47,7 @@ function parse_bundles(positional, pattern) {
 			path = parts[0];
 		}
 
-		if (!match(path, /\.uc$/)) {
+		if (substr(path, -3) !== ".uc") {
 			if (substr(path, length(path) - 1) !== "/")
 				path = path + "/";
 			path = path + pattern;
@@ -77,21 +77,21 @@ function main() {
 	let opts = json(ARGV[1]);
 	let positional = slice(ARGV, 2);
 
-	if (opts.reporter !== null && !match(opts.reporter, VALID_REPORTERS))
+	if (opts.reporter !== null && !full_match(opts.reporter, VALID_REPORTERS))
 		die(sprintf("Invalid -r value '%s': expected one of: detailed, compact, json.\n", opts.reporter));
 
 	let file_config = load_config(opts.config);
 
 	// The config's reporter was previously unvalidated, so `reporter: "compakt"`
 	// silently fell through to the default. Hold it to the same set as -r.
-	if (file_config.data.reporter !== null && !match(file_config.data.reporter, VALID_REPORTERS))
+	if (file_config.data.reporter !== null && !full_match(file_config.data.reporter, VALID_REPORTERS))
 		die(sprintf("Invalid config reporter '%s': expected one of: detailed, compact, json.\n", file_config.data.reporter));
 
-	const config_dir = file_config.path ? replace(file_config.path, /\/[^\/]+$/, "") : null;
+	const config_dir = file_config.path ? dirname(file_config.path) : null;
 
 	// Resolve a config-relative path against the config file's directory.
 	function resolve_rel(p) {
-		if (!config_dir || !p || match(p, /^\//)) return p;
+		if (!config_dir || !p || substr(p, 0, 1) === "/") return p;
 		return fs.realpath(config_dir + "/" + p) || config_dir + "/" + p;
 	}
 
@@ -101,7 +101,7 @@ function main() {
 	// get the config-dir treatment just below). Absolute paths pass through.
 	let lib_paths = [];
 	for (let p in (opts.lib_paths || []))
-		push(lib_paths, (p && !match(p, /^\//)) ? (fs.realpath(p) || p) : p);
+		push(lib_paths, (p && substr(p, 0, 1) !== "/") ? (fs.realpath(p) || p) : p);
 
 	for (let p in (file_config.data.lib_paths || []))
 		push(lib_paths, resolve_rel(p));

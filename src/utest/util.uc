@@ -3,6 +3,25 @@ import * as fs from 'fs';
 
 export const q = (s) => "'" + replace(s, "'", "'\\''") + "'";
 
+// True iff `re` matches the whole of string `s`. Do not rely on /^...$/ for this:
+// libucode 2026.07.09 (upstream 8a8b4d12) made ^/$ match at every line boundary
+// and stopped '.'/'[^...]' matching '\n', so on that engine /^[0-9]+$/ accepts
+// "2\nx". No flag restores whole-string anchoring on both engines (/s inverted
+// along with the fix), so compare the match against the input instead.
+export const full_match = function(s, re) {
+	if (type(s) !== 'string') return false;
+	let m = match(s, re);
+	return m !== null && m[0] === s;
+};
+
+// Everything before the last '/', or `path` unchanged when it has no '/' or ends
+// with one ("/a" -> ""). String-based for the same engine-portability reason as
+// full_match: the old replace(p, /\/[^\/]+$/, "") mangled paths containing '\n'.
+export const dirname = function(path) {
+	let i = rindex(path, "/");
+	return (i < 0 || i === length(path) - 1) ? path : substr(path, 0, i);
+};
+
 // Serialize a utest-controlled failure into the die() envelope that
 // parse_thrown() below recognizes. Used by assert.uc's fail() and the property
 // engine so the wire shape lives in exactly one place.

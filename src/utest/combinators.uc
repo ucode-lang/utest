@@ -1,4 +1,5 @@
 import * as math from 'math';
+import { full_match } from 'utest.util';
 
 // ─── Combinator prototype ────────────────────────────────────────────────────
 
@@ -35,7 +36,7 @@ export function path_str(path) {
 	for (let seg in path) {
 		if (type(seg) === 'int')
 			s += "[" + seg + "]";                       // array index
-		else if (match(seg, /^[A-Za-z_][A-Za-z0-9_]*$/))
+		else if (full_match(seg, /^[A-Za-z_][A-Za-z0-9_]*$/))
 			s += (s === "" ? "" : ".") + seg;           // plain identifier key: dotted
 		else
 			// A key with dots, digits, spaces, or empty is ambiguous in dotted form

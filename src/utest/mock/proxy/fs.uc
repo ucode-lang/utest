@@ -13,6 +13,12 @@ function dir_prefix(path) {
 // negation, '-' forms ranges (literal when leading/trailing), and a leading ']'
 // is a literal member. Bracket expressions are parsed explicitly rather than
 // escaped, because those members don't survive naive metacharacter escaping.
+//
+// glob(3) wildcards match '\n' like any other non-'/' byte, but libucode
+// 2026.07.09 stopped '[^...]' matching '\n' and made ^/$ per-line. Each wildcard
+// therefore also admits a literal newline explicitly, and callers must check the
+// match covers the whole path (^/$ alone no longer guarantee it).
+const ANY = "([^/]|\n)";  // one non-'/' byte, newline included on every engine
 const GLOB_META = "\\.^$|+(){}]";  // regex metacharacters escaped when literal (outside a class)
 function glob_to_regex(pattern) {
 	let out = "^";
@@ -20,8 +26,8 @@ function glob_to_regex(pattern) {
 	const n = length(pattern);
 	while (i < n) {
 		const ch = substr(pattern, i, 1);
-		if (ch === "*") { out += "[^/]*"; i++; continue; }
-		if (ch === "?") { out += "[^/]";  i++; continue; }
+		if (ch === "*") { out += ANY + "*"; i++; continue; }
+		if (ch === "?") { out += ANY;       i++; continue; }
 		if (ch === "[") {
 			let j = i + 1;
 			let negated = false;
@@ -50,7 +56,8 @@ function glob_to_regex(pattern) {
 				// escaping a trailing literal '-' first so it can't form a '-/' range.
 				if (substr(body, length(body) - 1) === "-")
 					body = substr(body, 0, length(body) - 1) + "\\-";
-				out += "[^" + body + "/]";
+				// A newline listed in the class stays excluded; otherwise admit it.
+				out += (index(body, "\n") >= 0) ? "[^" + body + "/]" : "([^" + body + "/]|\n)";
 			} else {
 				out += "[" + body + "]";
 			}
@@ -495,7 +502,8 @@ return {
 			// semantics — '**' is not globstar, '[...]' is a real character class).
 			let re = regexp(glob_to_regex(pattern));
 			for (let vp in virtual_paths) {
-				if (!match(vp, re)) continue;
+				let m = match(vp, re);
+				if (!m || m[0] !== vp) continue;
 				// A matching path mocked as deleted (null) must be removed even when the
 				// real glob returned it, not merely skipped.
 				if (ctx.get_data(vp) === null) delete files[vp];

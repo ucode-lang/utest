@@ -1,0 +1,339 @@
+{
+  "stats": {
+    "total": 14,
+    "passed": 14,
+    "failed": 0,
+    "errors": 0,
+    "fatals": 0,
+    "skipped": 0,
+    "ignored": 0,
+    "suites": 1
+  },
+  "failures": [],
+  "results": [
+    {
+      "event": "TEST_RESULT",
+      "suite": "examples/unit/29_newline_portability_test.uc",
+      "bundle": "examples/unit/29_newline_portability_test.uc",
+      "status": "PASS",
+      "error": null,
+      "path": [
+        {
+          "id": 0,
+          "name": "root"
+        },
+        {
+          "id": 14,
+          "name": "fs.glob() mock with newline paths"
+        },
+        {
+          "id": 18,
+          "name": "a literal pattern does not match a path that only starts with it"
+        }
+      ],
+      "index": 14
+    },
+    {
+      "event": "TEST_RESULT",
+      "suite": "examples/unit/29_newline_portability_test.uc",
+      "bundle": "examples/unit/29_newline_portability_test.uc",
+      "status": "PASS",
+      "error": null,
+      "path": [
+        {
+          "id": 0,
+          "name": "root"
+        },
+        {
+          "id": 14,
+          "name": "fs.glob() mock with newline paths"
+        },
+        {
+          "id": 16,
+          "name": "'?' matches a newline"
+        }
+      ],
+      "index": 12
+    },
+    {
+      "event": "TEST_RESULT",
+      "suite": "examples/unit/29_newline_portability_test.uc",
+      "bundle": "examples/unit/29_newline_portability_test.uc",
+      "status": "PASS",
+      "error": null,
+      "path": [
+        {
+          "id": 0,
+          "name": "root"
+        },
+        {
+          "id": 1,
+          "name": "full_match()"
+        },
+        {
+          "id": 4,
+          "name": "rejects a string whose last line alone matches"
+        }
+      ],
+      "index": 3
+    },
+    {
+      "event": "TEST_RESULT",
+      "suite": "examples/unit/29_newline_portability_test.uc",
+      "bundle": "examples/unit/29_newline_portability_test.uc",
+      "status": "PASS",
+      "error": null,
+      "path": [
+        {
+          "id": 0,
+          "name": "root"
+        },
+        {
+          "id": 14,
+          "name": "fs.glob() mock with newline paths"
+        },
+        {
+          "id": 17,
+          "name": "a negated class matches a newline"
+        }
+      ],
+      "index": 13
+    },
+    {
+      "event": "TEST_RESULT",
+      "suite": "examples/unit/29_newline_portability_test.uc",
+      "bundle": "examples/unit/29_newline_portability_test.uc",
+      "status": "PASS",
+      "error": null,
+      "path": [
+        {
+          "id": 0,
+          "name": "root"
+        },
+        {
+          "id": 1,
+          "name": "full_match()"
+        },
+        {
+          "id": 5,
+          "name": "rejects non-strings"
+        }
+      ],
+      "index": 4
+    },
+    {
+      "event": "TEST_RESULT",
+      "suite": "examples/unit/29_newline_portability_test.uc",
+      "bundle": "examples/unit/29_newline_portability_test.uc",
+      "status": "PASS",
+      "error": null,
+      "path": [
+        {
+          "id": 0,
+          "name": "root"
+        },
+        {
+          "id": 14,
+          "name": "fs.glob() mock with newline paths"
+        },
+        {
+          "id": 15,
+          "name": "'*' matches across a newline in the component"
+        }
+      ],
+      "index": 11
+    },
+    {
+      "event": "TEST_RESULT",
+      "suite": "examples/unit/29_newline_portability_test.uc",
+      "bundle": "examples/unit/29_newline_portability_test.uc",
+      "status": "PASS",
+      "error": null,
+      "path": [
+        {
+          "id": 0,
+          "name": "root"
+        },
+        {
+          "id": 6,
+          "name": "dirname()"
+        },
+        {
+          "id": 8,
+          "name": "keeps a newline that sits inside the last component"
+        }
+      ],
+      "index": 6
+    },
+    {
+      "event": "TEST_RESULT",
+      "suite": "examples/unit/29_newline_portability_test.uc",
+      "bundle": "examples/unit/29_newline_portability_test.uc",
+      "status": "PASS",
+      "error": null,
+      "path": [
+        {
+          "id": 0,
+          "name": "root"
+        },
+        {
+          "id": 11,
+          "name": "path_str()"
+        },
+        {
+          "id": 13,
+          "name": "dots a plain identifier key"
+        }
+      ],
+      "index": 10
+    },
+    {
+      "event": "TEST_RESULT",
+      "suite": "examples/unit/29_newline_portability_test.uc",
+      "bundle": "examples/unit/29_newline_portability_test.uc",
+      "status": "PASS",
+      "error": null,
+      "path": [
+        {
+          "id": 0,
+          "name": "root"
+        },
+        {
+          "id": 1,
+          "name": "full_match()"
+        },
+        {
+          "id": 2,
+          "name": "accepts a string the pattern covers entirely"
+        }
+      ],
+      "index": 1
+    },
+    {
+      "event": "TEST_RESULT",
+      "suite": "examples/unit/29_newline_portability_test.uc",
+      "bundle": "examples/unit/29_newline_portability_test.uc",
+      "status": "PASS",
+      "error": null,
+      "path": [
+        {
+          "id": 0,
+          "name": "root"
+        },
+        {
+          "id": 1,
+          "name": "full_match()"
+        },
+        {
+          "id": 3,
+          "name": "rejects a string whose first line alone matches"
+        }
+      ],
+      "index": 2
+    },
+    {
+      "event": "TEST_RESULT",
+      "suite": "examples/unit/29_newline_portability_test.uc",
+      "bundle": "examples/unit/29_newline_portability_test.uc",
+      "status": "PASS",
+      "error": null,
+      "path": [
+        {
+          "id": 0,
+          "name": "root"
+        },
+        {
+          "id": 6,
+          "name": "dirname()"
+        },
+        {
+          "id": 7,
+          "name": "strips the last component"
+        }
+      ],
+      "index": 5
+    },
+    {
+      "event": "TEST_RESULT",
+      "suite": "examples/unit/29_newline_portability_test.uc",
+      "bundle": "examples/unit/29_newline_portability_test.uc",
+      "status": "PASS",
+      "error": null,
+      "path": [
+        {
+          "id": 0,
+          "name": "root"
+        },
+        {
+          "id": 11,
+          "name": "path_str()"
+        },
+        {
+          "id": 12,
+          "name": "quotes a key containing a newline"
+        }
+      ],
+      "index": 9
+    },
+    {
+      "event": "TEST_RESULT",
+      "suite": "examples/unit/29_newline_portability_test.uc",
+      "bundle": "examples/unit/29_newline_portability_test.uc",
+      "status": "PASS",
+      "error": null,
+      "path": [
+        {
+          "id": 0,
+          "name": "root"
+        },
+        {
+          "id": 6,
+          "name": "dirname()"
+        },
+        {
+          "id": 9,
+          "name": "returns the input when there is no slash or a trailing one"
+        }
+      ],
+      "index": 7
+    },
+    {
+      "event": "TEST_RESULT",
+      "suite": "examples/unit/29_newline_portability_test.uc",
+      "bundle": "examples/unit/29_newline_portability_test.uc",
+      "status": "PASS",
+      "error": null,
+      "path": [
+        {
+          "id": 0,
+          "name": "root"
+        },
+        {
+          "id": 6,
+          "name": "dirname()"
+        },
+        {
+          "id": 10,
+          "name": "returns an empty string for a top-level path"
+        }
+      ],
+      "index": 8
+    }
+  ],
+  "bundles": {
+    "examples/unit/29_newline_portability_test.uc": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "errors": 0,
+      "fatals": 0,
+      "skipped": 0,
+      "ignored": 0
+    }
+  },
+  "files": [
+    "examples/unit/29_newline_portability_test.uc"
+  ],
+  "duration_ms": 13,
+  "seed": 1795128702215005847
+}

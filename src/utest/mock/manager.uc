@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { mkdir_p } from 'utest.util';
+import { mkdir_p, full_match, dirname } from 'utest.util';
 
 // ucode's require maps dotted module names to path separators
 // (require('a.b') resolves a/b.uc), so any module name that becomes a
@@ -13,7 +13,7 @@ function module_path(name) {
 // Create the parent directory of a module file so writefile/symlink succeed
 // for namespaced (dotted) module names.
 function ensure_parent(path) {
-	let dir = replace(path, /\/[^\/]+$/, "");
+	let dir = dirname(path);
 	if (dir !== path && !mkdir_p(dir))
 		die("[utest] error: could not create module directory: " + dir);
 }
@@ -63,7 +63,7 @@ function generate_standard_shim(name, shim_dir, api) {
 		// export) would make the whole shim fail to compile — taking every other
 		// member down with it. Skip it fail-soft: that one member is not
 		// interceptable, but the rest of the module still mocks.
-		if (!match(fn_name, /^[A-Za-z_][A-Za-z0-9_]*$/)) {
+		if (!full_match(fn_name, /^[A-Za-z_][A-Za-z0-9_]*$/)) {
 			warn(sprintf("[utest] warning: '%s' export '%s' is not a valid identifier; omitted from the shim\n", name, fn_name));
 			continue;
 		}
@@ -113,8 +113,11 @@ function setup_shim(name, shim_dir) {
 		return;
 	}
 	generate_standard_shim(name, shim_dir, api);
-	let ext_m = match(real_path, /\.[^.]+$/);
-	let ext = ext_m ? ext_m[0] : '';
+	// Extension of the basename only ("" when it has none), without a regex — see
+	// full_match in utest.util for why anchored regexes are avoided.
+	let base = substr(real_path, rindex(real_path, "/") + 1);
+	let dot = rindex(base, ".");
+	let ext = (dot >= 0 && dot < length(base) - 1) ? substr(base, dot) : '';
 	// The shim imports 'real_<name>'; require resolves that with dots→'/', so the
 	// symlink must live at module_path("real_" + name) + ext to be found.
 	let real_link = shim_dir + "/" + module_path("real_" + name) + ext;

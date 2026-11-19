@@ -1,7 +1,7 @@
 import * as math from 'math';
 import * as fs from 'fs';
 import * as dsl from 'utest.dsl';
-import { parse_thrown, fail_envelope, mkdir_p, format_path, seed_from_clock } from 'utest.util';
+import { parse_thrown, fail_envelope, mkdir_p, format_path, seed_from_clock, dirname } from 'utest.util';
 import { stack } from 'utest.runner.worker.registry';
 
 // Host configuration, supplied by the worker via configure() at startup so the
@@ -235,7 +235,7 @@ function shrink(g, prop_fn, failing, max_evals) {
 }
 
 function persist_dir() {
-	const base = replace(_host.test_file || "", /\/[^\/]+$/, "") || ".";
+	const base = dirname(_host.test_file || "") || ".";
 	return base + "/.utest/property";
 }
 

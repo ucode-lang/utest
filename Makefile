@@ -15,7 +15,7 @@ IMAGE_OPENWRT := openwrt/rootfs:$(SDK_ARCH)-$(ROOTFS_VERSION)
 # fatal-hook demos); `make meta-test` is the authoritative pass/fail check.
 ARGS ?= examples/unit
 
-.PHONY: test shell meta-test package
+.PHONY: test shell meta-test meta-test-new-engine package
 
 # --tmpfs /tmp:mode=1777 gives a world-writable /tmp: newer rootfs images ship
 # /tmp as 0755 root-owned, so utest.sh's `mktemp -d /tmp/...` run-dir fails under
@@ -46,6 +46,14 @@ shell:
 
 meta-test:
 	./scripts/meta-test.sh
+
+# Same suite on IMAGE_OPENWRT with libucode upgraded to the per-line regex engine
+# (see test/docker/new-engine.Dockerfile). utest must pass on both engines.
+IMAGE_NEW_ENGINE := utest-openwrt:new-engine
+meta-test-new-engine:
+	docker build -q -t $(IMAGE_NEW_ENGINE) --build-arg ROOTFS_IMAGE=$(IMAGE_OPENWRT) \
+		-f test/docker/new-engine.Dockerfile test/docker
+	IMAGE_OPENWRT=$(IMAGE_NEW_ENGINE) ./scripts/meta-test.sh
 
 package:
 	GIT_COMMIT=$(shell git rev-parse --short=8 HEAD) SDK_VERSION=$(SDK_VERSION) SDK_ARCH=$(SDK_ARCH) ./scripts/build-package.sh
